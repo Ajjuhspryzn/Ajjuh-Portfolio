@@ -517,24 +517,39 @@
           </div>
         </div>
         <div class="contact-form-wrapper reveal">
-          <form class="contact-form" id="contact-form" name="contact" netlify>
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify
+            id="contact-form"
+            class="contact-form"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+
             <div class="form-group">
               <label for="contact-name">Name</label>
               <input type="text" id="contact-name" name="name" placeholder="Your Name" required />
             </div>
+
             <div class="form-group">
               <label for="contact-email">Email</label>
               <input type="email" id="contact-email" name="email" placeholder="your@email.com" required />
             </div>
+
             <div class="form-group">
               <label for="contact-subject">Subject</label>
               <input type="text" id="contact-subject" name="subject" placeholder="Subject" required />
             </div>
+
             <div class="form-group">
               <label for="contact-message">Message</label>
               <textarea id="contact-message" name="message" rows="5" placeholder="Your message..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-glow">Send Message</button>
+
+            <button type="submit" class="btn btn-primary btn-glow">
+              Send Message
+            </button>
           </form>
         </div>
       </div>
