@@ -302,4 +302,48 @@ document.addEventListener('DOMContentLoaded', () => {
     tagObserver.observe(aboutTags);
   }
 
+  // ============================
+  // LIQUID GLASS ON SCROLL
+  // ============================
+  const glassSelectors = [
+    '.project-card',
+    '.timeline-content',
+    '.education-card',
+    '.cert-card',
+    '.metric-card',
+    '.interest-card',
+    '.why-card',
+    '.philosophy-card',
+    '.contact-card',
+    '.stat-box'
+  ];
+
+  const glassElements = document.querySelectorAll(glassSelectors.join(', '));
+
+  // Add the liquid-glass class to all target elements
+  glassElements.forEach(el => el.classList.add('liquid-glass'));
+
+  const glassObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Stagger siblings for a cascading glass effect
+        const parent = entry.target.parentElement;
+        const siblings = parent ? Array.from(parent.querySelectorAll('.liquid-glass')) : [entry.target];
+        const idx = siblings.indexOf(entry.target);
+        const delay = idx >= 0 ? idx * 100 : 0;
+
+        setTimeout(() => {
+          entry.target.classList.add('glass-active');
+        }, delay);
+
+        glassObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  glassElements.forEach(el => glassObserver.observe(el));
+
 });

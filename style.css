@@ -25,6 +25,15 @@
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --max-width: 1200px;
   --nav-height: 72px;
+
+  /* Liquid Glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(30, 144, 255, 0.35);
+  --glass-blur: 18px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-shadow-hover: 0 12px 48px rgba(30, 144, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 *,
@@ -780,28 +789,9 @@ img {
   overflow: hidden;
 }
 
-.project-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-lg);
-  padding: 1px;
-  background: linear-gradient(135deg, var(--accent), transparent, transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.project-card:hover::before {
-  opacity: 1;
-}
-
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 40px rgba(0, 255, 136, 0.08);
+  box-shadow: 0 8px 40px rgba(30, 144, 255, 0.12);
   border-color: var(--border-accent);
 }
 
@@ -1196,25 +1186,9 @@ img {
   overflow: hidden;
 }
 
-.philosophy-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.philosophy-card:hover::before {
-  opacity: 1;
-}
-
 .philosophy-card:hover {
   border-color: var(--border-accent);
-  box-shadow: 0 4px 30px rgba(0, 255, 136, 0.06);
+  box-shadow: 0 4px 30px rgba(30, 144, 255, 0.1);
   transform: translateY(-4px);
 }
 
@@ -1387,6 +1361,96 @@ img {
 .footer-copy {
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+/* ========================================
+   LIQUID GLASS EFFECT
+   ======================================== */
+.liquid-glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  transition:
+    background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass.glass-active {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+}
+
+.liquid-glass.glass-active:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Shimmer highlight that sweeps across on activation */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent 80%
+  );
+  pointer-events: none;
+  transition: none;
+  z-index: 1;
+}
+
+.liquid-glass.glass-active::after {
+  animation: glass-shimmer 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes glass-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+/* Refraction edge — subtle top highlight */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    rgba(30, 144, 255, 0.2),
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 2;
+}
+
+.liquid-glass.glass-active::before {
+  opacity: 1;
 }
 
 /* ========================================
